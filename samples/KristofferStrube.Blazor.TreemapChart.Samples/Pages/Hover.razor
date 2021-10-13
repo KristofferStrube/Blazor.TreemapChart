@@ -1,0 +1,57 @@
+﻿@page "/hover"
+
+<h1>Hover interaction</h1>
+<h3>300x300</h3>
+<TreemapChart Items=Continents
+              Width="300"
+              Height="300"
+              StrokeWidth="4"
+              QuantityMapper="(item) => item.SquareKilometers"
+              LabelMapper="(item) => item.Name"
+              FillMapper="(item) => item.Fill"
+              StrokeMapper=StrokeMapper
+              OnMouseOver=OnMouseOver
+              OnMouseOut=OnMouseOut />
+<br />
+<br />
+<label>Square Kilometers:</label>
+<span>@SquareKilometers</span>
+
+@code {
+    protected List<Continent> Continents = new()
+    {
+        new("Asia", 44_614_000, "#ff6600", "#803300"),
+        new("Africa", 30_365_000, "#ffff00", "#808000"),
+        new("North America", 24_230_000, "#99ff33", "#408000"),
+        new("South America", 17_814_000, "#00ff00", "#008000"),
+        new("Antarctica", 14_200_000, "#0000ff", "#000080"),
+        new("Europe", 10_000_000, "#ff0000", "#800000"),
+        new("Oceania", 8_510_900, "#ff00ff", "#800080"),
+    };
+
+    protected string SquareKilometers { get; set; } = "";
+
+    protected Func<Continent, string> StrokeMapper = _ => "none";
+
+    private Continent CurrentContinent;
+
+    protected void OnMouseOver(Continent continent)
+    {
+        if (CurrentContinent != continent)
+        {
+            SquareKilometers = $"{continent.SquareKilometers} km²";
+            StrokeMapper = continent => continent.Stroke;
+            StateHasChanged();
+        }
+    }
+
+    protected void OnMouseOut(Continent continent)
+    {
+        SquareKilometers = "";
+        CurrentContinent = null;
+        StrokeMapper = _ => "none";
+        StateHasChanged();
+    }
+
+    public record Continent(string Name, double SquareKilometers, string Fill, string Stroke);
+}

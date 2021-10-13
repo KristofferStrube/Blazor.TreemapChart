@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31606.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KristofferStrube.Blazor.TreemapChart", "src\KristofferStrube.Blazor.TreemapChart\KristofferStrube.Blazor.TreemapChart.csproj", "{5BA2E811-7758-430F-BACA-57F3F83F4D06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KristofferStrube.Blazor.TreemapChart.Samples", "samples\KristofferStrube.Blazor.TreemapChart.Samples\KristofferStrube.Blazor.TreemapChart.Samples.csproj", "{9EBF6838-42A7-4D56-9489-9884FD71EC04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BA2E811-7758-430F-BACA-57F3F83F4D06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA2E811-7758-430F-BACA-57F3F83F4D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA2E811-7758-430F-BACA-57F3F83F4D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA2E811-7758-430F-BACA-57F3F83F4D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EBF6838-42A7-4D56-9489-9884FD71EC04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EBF6838-42A7-4D56-9489-9884FD71EC04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EBF6838-42A7-4D56-9489-9884FD71EC04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EBF6838-42A7-4D56-9489-9884FD71EC04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {042210AF-D083-468C-931B-F7F4966F502C}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,122 @@
+﻿@typeparam TItem
+
+<svg width=@Width height=@Height>
+    @foreach (var rectangle in Rectangles)
+    {
+        <g
+            @onclick="() => OnClick(rectangle.Item)"
+            @onmouseover="() => OnMouseOver(rectangle.Item)"
+            @onmouseout="() => OnMouseOut(rectangle.Item)" >
+            <rect x=@rectangle.X.AsString()
+              y=@rectangle.Y.AsString()
+              width=@rectangle.Width.AsString()
+              height=@rectangle.Height.AsString()
+              fill=@rectangle.Fill
+              stroke-width=@StrokeWidth
+              stroke=@rectangle.Stroke/>
+            <text x=@((rectangle.X+5).AsString())
+              y=@((rectangle.Y+20).AsString())
+              fill=@TextColor>
+                @rectangle.Label
+            </text>
+        </g>
+    }
+</svg>
+@foreach (var item in Items)
+{
+}
+
+@code {
+    [Parameter]
+    public double Width { get; set; } = 500;
+
+    [Parameter]
+    public double Height { get; set; } = 500;
+
+    [Parameter]
+    public double Padding { get; set; } = 2;
+
+    [Parameter]
+    public double StrokeWidth { get; set; } = 2;
+
+    [Parameter]
+    public string TextColor { get; set; } = "black";
+
+    [Parameter]
+    [EditorRequired]
+    public IEnumerable<TItem> Items { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public Func<TItem, double> QuantityMapper { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public Func<TItem, string> LabelMapper { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public Func<TItem, string> FillMapper { get; set; }
+
+    [Parameter]
+    public Func<TItem, string> StrokeMapper { get; set; } = _ => "none";
+
+    [Parameter]
+    public Action<TItem> OnClick { get; set; } = _ => { };
+
+    [Parameter]
+    public Action<TItem> OnMouseOver { get; set; } = _ => { };
+
+    [Parameter]
+    public Action<TItem> OnMouseOut { get; set; } = _ => { };
+
+    protected override void OnParametersSet()
+    {
+        Rectangles = new();
+        var sum = Items.Sum(item => QuantityMapper(item));
+        var orderedItems = Items.OrderByDescending(item => QuantityMapper(item));
+        double x = 0;
+        double y = 0;
+        foreach (var item in orderedItems)
+        {
+            var quantity = QuantityMapper(item);
+            var area = Width * Height * (quantity / sum);
+            if (Height - y > Width - x)
+            {
+                // We fill on horizontal
+                var rectangle = new Rectangle(
+                    Item: item,
+                    X: x + Padding,
+                    Y: y + Padding,
+                    Width: Width - x - Padding * 2,
+                    Height: area / (Width - x) - Padding * 2,
+                    Label: LabelMapper(item),
+                    Fill: FillMapper(item),
+                    Stroke: StrokeMapper(item)
+                );
+                y += area / (Width - x);
+                Rectangles.Add(rectangle);
+            }
+            else
+            {
+                // We fill on vertical
+                var rectangle = new Rectangle(
+                    Item: item,
+                    X: x + Padding,
+                    Y: y + Padding,
+                    Width: area / (Height - y) - Padding * 2,
+                    Height: Height - y - Padding * 2,
+                    Label: LabelMapper(item),
+                    Fill: FillMapper(item),
+                    Stroke: StrokeMapper(item)
+                );
+                x += area / (Height - y);
+                Rectangles.Add(rectangle);
+            }
+        }
+    }
+
+    private List<Rectangle> Rectangles { get; set; }
+
+    private record Rectangle(TItem Item, double X, double Y, double Width, double Height, string Label, string Fill, string Stroke);
+}

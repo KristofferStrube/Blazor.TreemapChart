@@ -1,0 +1,57 @@
+﻿@page "/"
+
+<h1>Treemap Chart Component world population</h1>
+<h3>300x300</h3>
+<TreemapChart
+    Items=Continents
+    Width="300"
+    Height="300"
+    QuantityMapper="(item) => item.SquareKilometers"
+    LabelMapper="(item) => item.Name"
+    FillMapper="(item) => item.Fill"
+    />
+    <br />
+    <br />
+<h3>300x500</h3>
+<TreemapChart
+    Items=Continents
+    Width="300"
+    Height="500"
+    Padding="3"
+    StrokeWidth="4"
+    QuantityMapper="(item) => item.SquareKilometers"
+    LabelMapper="(item) => item.Name"
+    FillMapper="(item) => item.Fill"
+    StrokeMapper="(item) => item.Stroke"
+    />
+    <br />
+    <br />
+<h3>600x500</h3>
+<TreemapChart
+    Items=Continents
+    Width="600"
+    Height="300"
+    Padding="0"
+    StrokeWidth="0"
+    TextColor="white"
+    QuantityMapper="(item) => item.SquareKilometers"
+    LabelMapper="(item) => item.Name"
+    FillMapper="(item) => item.Fill"
+    />
+    <br />
+    <br />
+
+@code {
+    protected List<Continent> Continents = new()
+    {
+        new("Asia", 44_614_000, "#ff6600", "#803300"),
+        new("Africa", 30_365_000, "#ffff00", "#808000"),
+        new("North America", 24_230_000, "#99ff33", "#408000"),
+        new("South America", 17_814_000, "#00ff00", "#008000"),
+        new("Antarctica", 14_200_000, "#0000ff", "#000080"),
+        new("Europe", 10_000_000, "#ff0000", "#800000"),
+        new("Oceania", 8_510_900, "#ff00ff", "#800080"),
+    };
+
+    public record Continent(string Name, double SquareKilometers, string Fill, string Stroke);
+}
