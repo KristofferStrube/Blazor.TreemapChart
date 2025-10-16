@@ -11,26 +11,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-        # Checkout the code
         - uses: actions/checkout@v2
 
-        # Install .NET Core SDK
-        - name: Setup .NET .NET 6 preview
+        - name: Setup .NET 9.0 preview
           uses: actions/setup-dotnet@v1
           with:
-            dotnet-version: '6.0.x'
+            dotnet-version: '9.0.x'
             include-prerelease: true
+            
+        - name: Add AOT Workload
+          run: |
+            dotnet workload install wasm-tools
+            dotnet workload restore
+            
+        - name: Build
+          run: dotnet build
 
-        # Generate the website
         - name: Publish
           run: dotnet publish samples/KristofferStrube.Blazor.TreemapChart.Samples/KristofferStrube.Blazor.TreemapChart.Samples.csproj --configuration Release --output build
 
-        # Publish the website
         - name: GitHub Pages action
           if: ${{ github.ref == 'refs/heads/main' }} # Publish only when the push is on main
           uses: peaceiris/actions-gh-pages@v3.6.1
           with:
-            github_token: ${{ secrets.PUBLISH_TOKEN }}
+            github_token: ${{ secrets.GITHUB_TOKEN }}
             publish_branch: gh-pages
             publish_dir: build/wwwroot
             allow_empty_commit: false
