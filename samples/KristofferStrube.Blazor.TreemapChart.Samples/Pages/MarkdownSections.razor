@@ -1,0 +1,72 @@
+﻿@page "/markdown-sections"
+
+<h1>Markdown Sections</h1>
+
+<p>When you fill in some Markdown document with sections on this page, it will split out each subsection (## My Subsection) and count the lines in the subsection to quantify the size of the section area in the tree-map.</p>
+
+<InputTextArea style="height:200px;width:100%;" @bind-Value=@input></InputTextArea>
+
+<button @onclick="ShowChart">Show Chart!</button>
+@if (sections is not null)
+{
+	<br />
+	<br />
+	<TreemapChart Items=sections
+				  QuantityMapper="s => s.Lines"
+				  LabelMapper=@(s => s.Name)
+				  TitleMapper=@(s => string.Join("\n", s.SubSections.Select(sub => $"- {sub}")))
+				  FillMapper=@(s => s.Color)
+				  TextColor="white"
+				  OnMouseOver=@(s => { s.Color = "#0b0"; StateHasChanged(); })
+				  OnMouseOut=@(s => { s.Color = "#090"; StateHasChanged(); })
+				  Width="1600"
+				  Height="900" />
+	<br />
+	<br />
+}
+
+@code {
+	private string input = "";
+
+	private List<Section>? sections;
+
+	private void ShowChart()
+	{
+		List<Section> sections = new();
+
+		Section currentSection = new("root");
+
+		foreach (var line in input.Split("\n"))
+		{
+			if (line.StartsWith("## "))
+			{
+				if (currentSection.Lines > 0)
+				{
+					sections.Add(currentSection);
+				}
+				currentSection = new(line[3..]);
+			}
+			else if (line.StartsWith("### "))
+			{
+				currentSection.SubSections.Add(line[4..]);
+			}
+			else if (!string.IsNullOrWhiteSpace(line))
+			{
+				currentSection.Lines++;
+			}
+		}
+
+		sections.Add(currentSection);
+
+		this.sections = sections;
+	}
+
+	public record Section(string Name)
+	{
+		public int Lines { get; set; } = 0;
+
+		public string Color { get; set; } = "#090";
+
+		public List<string> SubSections { get; } = new();
+	}
+}
