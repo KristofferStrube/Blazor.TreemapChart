@@ -26,7 +26,21 @@
 }
 
 @code {
-	private string input = "";
+	private string input = @"## My Subsection
+This is some content
+```
+and a code-block
+```
+it is rather big
+
+## A smaller subsection
+not that much here
+### Sub-subsection
+But it has a sub-subsection that counts towards the parent section's size
+
+## A very small subsection
+This is even smaller
+";
 
 	private List<Section>? sections;
 

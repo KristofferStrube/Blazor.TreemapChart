@@ -3,24 +3,23 @@
 <svg width=@Width height=@Height>
     @foreach (var rectangle in Rectangles)
     {
-        <g
-            @onclick="() => OnClick(rectangle.Item)"
-            @onmouseover="() => OnMouseOver(rectangle.Item)"
-            @onmouseout="() => OnMouseOut(rectangle.Item)" >
+        <g @onclick="() => OnClick(rectangle.Item)"
+           @onmouseover="() => OnMouseOver(rectangle.Item)"
+           @onmouseout="() => OnMouseOut(rectangle.Item)">
             <rect x=@rectangle.X.AsString()
-              y=@rectangle.Y.AsString()
-              width=@rectangle.Width.AsString()
-              height=@rectangle.Height.AsString()
-              fill=@rectangle.Fill
-              stroke-width=@StrokeWidth
-              stroke=@rectangle.Stroke/>
-            @if (rectangle.Title is {} title)
+                  y=@rectangle.Y.AsString()
+                  width=@rectangle.Width.AsString()
+                  height=@rectangle.Height.AsString()
+                  fill=@rectangle.Fill
+                  stroke-width=@StrokeWidth
+                  stroke=@rectangle.Stroke />
+            @if (rectangle.Title is { } title)
             {
                 <title>@title</title>
             }
-            <text x=@((rectangle.X+5).AsString())
-              y=@((rectangle.Y+20).AsString())
-              fill=@TextColor>
+            <text x=@((rectangle.X + 5).AsString())
+                  y=@((rectangle.Y + 20).AsString())
+                  fill=@TextColor>
                 @rectangle.Label
             </text>
         </g>
